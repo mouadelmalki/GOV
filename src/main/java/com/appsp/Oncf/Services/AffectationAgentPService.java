@@ -14,35 +14,26 @@ public class AffectationAgentPService {
     @Autowired
     private AffectationAgentPRepository affectationAgentPRepository;
 
-    // Créer une affectation agent P
+    public AffectationAgentP getAffectationAgentPById(int id) {
+        Optional<AffectationAgentP> optionalAffectationAgentP = affectationAgentPRepository.findById(id);
+        return optionalAffectationAgentP.orElse(null);
+    }
 
-    public AffectationAgentP creerAffectationAgentP(AffectationAgentP affectationAgentP) {
+    public AffectationAgentP createAffectationAgentP(AffectationAgentP affectationAgentP) {
         return affectationAgentPRepository.save(affectationAgentP);
     }
 
-    // Récupérer toutes les affectations agents P
-
-    public List<AffectationAgentP> recupererToutesLesAffectationsAgentsP() {
-        return affectationAgentPRepository.findAll();
+    public AffectationAgentP updateAffectationAgentP(AffectationAgentP affectationAgentP) {
+        Optional<AffectationAgentP> optionalAffectationAgentP = affectationAgentPRepository.findById(affectationAgentP.getId_AffectAP());
+        if (optionalAffectationAgentP.isPresent()) {
+            return affectationAgentPRepository.save(affectationAgentP);
+        } else {
+            return null;
+        }
     }
 
-    // Récupérer une affectation agent P par son ID
-
-    public Optional<AffectationAgentP> recupererAffectationAgentPParId(int id) {
-        return affectationAgentPRepository.findById(id);
-    }
-
-    // Mettre à jour une affectation agent P
-
-    public AffectationAgentP mettreAJourAffectationAgentP(AffectationAgentP affectationAgentP) {
-        return affectationAgentPRepository.save(affectationAgentP);
-    }
-
-    // Supprimer une affectation agent P
-
-    public void supprimerAffectationAgentP(int id) {
+    public void deleteAffectationAgentPById(int id) {
         affectationAgentPRepository.deleteById(id);
     }
-
 }
 

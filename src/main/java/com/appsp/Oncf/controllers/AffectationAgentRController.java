@@ -7,8 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/affectationsAgentR")
@@ -17,47 +15,37 @@ public class AffectationAgentRController {
     @Autowired
     private AffectationAgentRService affectationAgentRService;
 
-    @PostMapping
-    public ResponseEntity<AffectationAgentR> creerAffectationAgentR(@RequestBody AffectationAgentR affectationAgentR) {
-        AffectationAgentR nouvelleAffectationAgentR = affectationAgentRService.creerAffectationAgentR(affectationAgentR);
-        return new ResponseEntity<>(nouvelleAffectationAgentR, HttpStatus.CREATED);
-    }
-
-    @GetMapping
-    public List<AffectationAgentR> recupererToutesLesAffectationAgentRs() {
-        return affectationAgentRService.recupererToutesLesAffectationAgentRs();
-    }
-
     @GetMapping("/{id}")
-    public ResponseEntity<AffectationAgentR> recupererAffectationAgentRParId(@PathVariable int id) {
-        Optional<AffectationAgentR> affectationAgentROptional = affectationAgentRService.recupererAffectationAgentRParId(id);
-        if (affectationAgentROptional.isPresent()) {
-            return new ResponseEntity<>(affectationAgentROptional.get(), HttpStatus.OK);
+    public ResponseEntity<AffectationAgentR> getAffectationAgentRById(@PathVariable int id) {
+        AffectationAgentR affectationAgentR = affectationAgentRService.getAffectationAgentRById(id);
+        if (affectationAgentR != null) {
+            return ResponseEntity.ok(affectationAgentR);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
     }
 
+    @PostMapping
+    public ResponseEntity<AffectationAgentR> createAffectationAgentR(@RequestBody AffectationAgentR affectationAgentR) {
+        affectationAgentR = affectationAgentRService.createAffectationAgentR(affectationAgentR);
+        return ResponseEntity.status(HttpStatus.CREATED).body(affectationAgentR);
+    }
+
     @PutMapping("/{id}")
-    public ResponseEntity<AffectationAgentR> modifierAffectationAgentR(@PathVariable int id, @RequestBody AffectationAgentR affectationAgentR) {
-        Optional<AffectationAgentR> affectationAgentROptional = affectationAgentRService.recupererAffectationAgentRParId(id);
-        if (affectationAgentROptional.isPresent()) {
-            affectationAgentR.setId_AffectR(id);
-            AffectationAgentR affectationAgentRModifie = affectationAgentRService.mettreAJourAffectationAgentR(affectationAgentR);
-            return new ResponseEntity<>(affectationAgentRModifie, HttpStatus.OK);
+    public ResponseEntity<AffectationAgentR> updateAffectationAgentR(@PathVariable int id, @RequestBody AffectationAgentR affectationAgentR) {
+        affectationAgentR.setId_AffectAR(id);
+        affectationAgentR = affectationAgentRService.updateAffectationAgentR(affectationAgentR);
+        if (affectationAgentR != null) {
+            return ResponseEntity.ok(affectationAgentR);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> supprimerAffectationAgentR(@PathVariable int id) {
-        try {
-            affectationAgentRService.supprimerAffectationAgentRParId(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public ResponseEntity<Void> deleteAffectationAgentRById(@PathVariable int id) {
+        affectationAgentRService.deleteAffectationAgentRById(id);
+        return ResponseEntity.noContent().build();
     }
 }
 

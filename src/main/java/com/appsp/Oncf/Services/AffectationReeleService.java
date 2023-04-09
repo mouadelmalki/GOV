@@ -30,7 +30,7 @@ public class AffectationReeleService {
         Optional<AffectationReele> affectationReeleOptional = recupererAffectationReeleParId(affectationReele.getId_AffecR());
         if (affectationReeleOptional.isPresent()) {
             AffectationReele affectationReeleExistante = affectationReeleOptional.get();
-            affectationReeleExistante.setAffectVoie(affectationReele.getAffectVoie());
+            affectationReeleExistante.setAffectationVoie(affectationReele.getAffectationVoie());
             return affectationReeleRepository.save(affectationReeleExistante);
         } else {
             return null;

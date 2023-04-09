@@ -9,6 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface EnginRepository extends JpaRepository<Engin, Integer> {
-    Optional<Engin> findById(String id);
+    Optional<Engin> findById(int id);
 
 }

@@ -10,11 +10,11 @@ import java.io.Serializable;
 @Entity
 @NoArgsConstructor @AllArgsConstructor
 @Data
-//@Table(name = "ENGIN")
+@Table(name = "engin")
 public class Engin implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    private String typeEngin;
+    private int id_engin;
+    private String typeengin;
 }
 

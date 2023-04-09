@@ -11,13 +11,15 @@ import java.util.Date;
 
 @Entity
 @Data
-@AllArgsConstructor @NoArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "affichage")
 public class Affichage implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @OneToOne
-    @JoinColumn(name = "id_Situ")
+    @JoinColumn(name = "id_situ")
     private Situation situation;
     private String message;
     @Temporal(TemporalType.DATE)

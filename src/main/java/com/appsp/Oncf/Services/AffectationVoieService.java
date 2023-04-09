@@ -25,15 +25,15 @@ public class AffectationVoieService {
     public AffectationVoie updateAffectationVoie(int id, AffectationVoie affectationVoie) {
         AffectationVoie affectationVoieToUpdate = affectationVoieRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Affectation de voie introuvable pour l'ID: " + id));
-        affectationVoieToUpdate.setEngin(affectationVoie.getEngin());
+        affectationVoieToUpdate.setEngin_id(affectationVoie.getEngin_id());
         affectationVoieToUpdate.setMotif(affectationVoie.getMotif());
-        affectationVoieToUpdate.setPrevisionSortie(affectationVoie.getPrevisionSortie());
+        affectationVoieToUpdate.setPrevisionsortie(affectationVoie.getPrevisionsortie());
         affectationVoieToUpdate.setVoie(affectationVoie.getVoie());
         affectationVoieToUpdate.setEmplacement(affectationVoie.getEmplacement());
-        affectationVoieToUpdate.setBasseT(affectationVoie.isBasseT());
-        affectationVoieToUpdate.setMoyenneT(affectationVoie.isMoyenneT());
-        affectationVoieToUpdate.setHauteT(affectationVoie.isHauteT());
-        affectationVoieToUpdate.setMiseATerre(affectationVoie.isMiseATerre());
+        affectationVoieToUpdate.setBasset(affectationVoie.isBasset());
+        affectationVoieToUpdate.setMoyennet(affectationVoie.isMoyennet());
+        affectationVoieToUpdate.setHautet(affectationVoie.isHautet());
+        affectationVoieToUpdate.setMiseaterre(affectationVoie.isMiseaterre());
         return affectationVoieRepository.save(affectationVoieToUpdate);
     }
 

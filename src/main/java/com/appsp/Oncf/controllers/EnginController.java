@@ -1,6 +1,7 @@
 package com.appsp.Oncf.controllers;
 
 
+import com.appsp.Oncf.Repository.EnginRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,19 +15,20 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/engins")
-@AllArgsConstructor
+//@AllArgsConstructor
 public class EnginController {
     @Autowired
     private EnginService enginService;
 
     @PostMapping
     public ResponseEntity<Engin> createEngin(@RequestBody Engin engin) {
-        return new ResponseEntity<>(enginService.saveEngin(engin), HttpStatus.CREATED);
+        Engin nouvelEngin = enginService.saveEngin(engin);
+        return new ResponseEntity<>(nouvelEngin, HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<List<Engin>> getAllEngins() {
-        return new ResponseEntity<>(enginService.getAllEngins(), HttpStatus.OK);
+    public List<Engin> getAllEngins() {
+        return enginService.getAllEngins();
     }
 
     @GetMapping("/{id}")

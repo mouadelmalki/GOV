@@ -14,24 +14,27 @@ public class AffectationAgentRService {
     @Autowired
     private AffectationAgentRRepository affectationAgentRRepository;
 
-    public AffectationAgentR creerAffectationAgentR(AffectationAgentR affectationAgentR) {
+    public AffectationAgentR getAffectationAgentRById(int id) {
+        Optional<AffectationAgentR> optionalAffectationAgentR = affectationAgentRRepository.findById(id);
+        return optionalAffectationAgentR.orElse(null);
+    }
+
+    public AffectationAgentR createAffectationAgentR(AffectationAgentR affectationAgentR) {
         return affectationAgentRRepository.save(affectationAgentR);
     }
 
-    public List<AffectationAgentR> recupererToutesLesAffectationAgentRs() {
-        return affectationAgentRRepository.findAll();
+    public AffectationAgentR updateAffectationAgentR(AffectationAgentR affectationAgentR) {
+        Optional<AffectationAgentR> optionalAffectationAgentR = affectationAgentRRepository.findById(affectationAgentR.getId_AffectAR());
+        if (optionalAffectationAgentR.isPresent()) {
+            return affectationAgentRRepository.save(affectationAgentR);
+        } else {
+            return null;
+        }
     }
 
-    public Optional<AffectationAgentR> recupererAffectationAgentRParId(int id) {
-        return affectationAgentRRepository.findById(id);
-    }
-
-    public AffectationAgentR mettreAJourAffectationAgentR(AffectationAgentR affectationAgentR) {
-        return affectationAgentRRepository.save(affectationAgentR);
-    }
-
-    public void supprimerAffectationAgentRParId(int id) {
+    public void deleteAffectationAgentRById(int id) {
         affectationAgentRRepository.deleteById(id);
     }
 }
+
 

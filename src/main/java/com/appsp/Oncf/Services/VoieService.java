@@ -1,6 +1,7 @@
 package com.appsp.Oncf.Services;
 
 import com.appsp.Oncf.Repository.VoieRepository;
+import com.appsp.Oncf.models.Utilisateur;
 import org.springframework.stereotype.Service;
 import com.appsp.Oncf.models.Voie;
 
@@ -16,6 +17,10 @@ public class VoieService {
         this.voieRepository = voieRepository;
     }
 
+    public List<Voie> recupererTousLesVoies() {
+        return voieRepository.findAll();
+    }
+
     public Voie getVoieById(int id) {
         Optional<Voie> voieOptional = voieRepository.findById(id);
         return voieOptional.orElse(null);
@@ -28,7 +33,7 @@ public class VoieService {
     public Voie updateVoie(int id, Voie voie) {
         Optional<Voie> voieOptional = voieRepository.findById(id);
         if (voieOptional.isPresent()) {
-            voie.setId(id);
+            voie.setId_voie(id);
             return voieRepository.save(voie);
         } else {
             return null;

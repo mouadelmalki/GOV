@@ -1,15 +1,10 @@
 package com.appsp.Oncf.controllers;
 
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.appsp.Oncf.Services.AffichageService;
 import com.appsp.Oncf.models.Affichage;
 
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/affichage")

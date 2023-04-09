@@ -1,24 +1,29 @@
 package com.appsp.Oncf.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-//@Table(name = "affectation_agent_p")
-public class AffectationAgentP {
+@Table(name = "affectationagentp")
+public class AffectationAgentP implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id_AffectP;
+    private int id_AffectAP;
 
-    private int id_User;
+    @ManyToOne
+    @JoinColumn(name = "id_affecp")
+    private AffectationPrealable affectationP;
+
+    @ManyToOne
+    @JoinColumn(name = "id_user")
+    private Utilisateur user;
 
 }

@@ -43,7 +43,7 @@ public class AffectationReeleController {
         Optional<AffectationReele> affectationReeleOptional = affectationReeleService.recupererAffectationReeleParId(id);
         if (affectationReeleOptional.isPresent()) {
             AffectationReele affectationReeleExistante = affectationReeleOptional.get();
-            affectationReeleExistante.setAffectVoie(affectationReele.getAffectVoie());
+            affectationReeleExistante.setAffectationVoie(affectationReele.getAffectationVoie());
             AffectationReele affectationReeleMiseAJour = affectationReeleService.mettreAJourAffectationReele(affectationReeleExistante);
             return new ResponseEntity<>(affectationReeleMiseAJour, HttpStatus.OK);
         } else {

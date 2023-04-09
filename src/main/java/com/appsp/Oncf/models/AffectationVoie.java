@@ -4,40 +4,41 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import com.appsp.Oncf.models.Voiture;
 
 import java.io.Serializable;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Table(name = "affectationvoie")
 public class AffectationVoie implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private int id_affecv;
 
     @ManyToOne
-    private Engin engin;
+    private Engin engin_id;
 
     private String motif;
 
-    private String previsionSortie;
+    private String previsionsortie;
 
     @ManyToOne
     private Voie voie;
 
     private int emplacement;
 
-    private boolean basseT;
+    private boolean basset;
 
-    private boolean moyenneT;
+    private boolean estimmobilise;
 
-    private boolean hauteT;
+    private boolean moyennet;
 
-    private boolean miseATerre;
+    private boolean hautet;
+
+    private boolean miseaterre;
 
 }
 

@@ -1,17 +1,37 @@
 package com.appsp.Oncf.Services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import com.appsp.Oncf.Repository.UtilisateurRepository;
 import com.appsp.Oncf.models.Utilisateur;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UtilisateurService {
+public class UtilisateurService implements UserDetailsService {
 
     @Autowired
     private UtilisateurRepository utilisateurRepository;
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Utilisateur utilisateur = utilisateurRepository.findByLogin(username);
+        if (utilisateur == null) {
+            throw new UsernameNotFoundException("Utilisateur non trouvé : " + username);
+        }
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(utilisateur.getProfil()));
+        return new User(utilisateur.getLogin(), utilisateur.getMotDePasse(), authorities);
+    }
+
 
     public Utilisateur creerUtilisateur(Utilisateur utilisateur) {
         return utilisateurRepository.save(utilisateur);
@@ -42,6 +62,7 @@ public class UtilisateurService {
         utilisateurRepository.deleteById(id);
     }
 }
+
 
 
 

@@ -10,20 +10,17 @@ import java.io.Serializable;
 @Entity
 @AllArgsConstructor @NoArgsConstructor
 @Data
-//@Table(name = "VOIE")
+@Table(name = "voie")
 public class Voie implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private int id_voie;
 
-    @Column(name = "electrifiee")
     private Boolean electrifiee;
 
-    @Column(name = "hors_service")
-    private Boolean horsService;
+    private Boolean horservice;
 
-    @Column(name = "sous_tension")
-    private Boolean sousTension;
+    private Boolean soustension;
 
 }
 

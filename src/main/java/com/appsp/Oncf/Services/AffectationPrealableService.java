@@ -26,10 +26,10 @@ public class AffectationPrealableService {
     }
 
     public AffectationPrealable mettreAJourAffectationPrealable(AffectationPrealable affectationPrealable) {
-        Optional<AffectationPrealable> affectationPrealableOptional = recupererAffectationPrealableParId(affectationPrealable.getId_AffecP());
+        Optional<AffectationPrealable> affectationPrealableOptional = recupererAffectationPrealableParId(affectationPrealable.getId_affecp());
         if (affectationPrealableOptional.isPresent()) {
             AffectationPrealable affectationPrealableAModifier = affectationPrealableOptional.get();
-            affectationPrealableAModifier.setAffectVoie(affectationPrealable.getAffectVoie());
+            affectationPrealableAModifier.setAffectationVoie(affectationPrealable.getAffectationVoie());
             return affectationPrealableRepository.save(affectationPrealableAModifier);
         } else {
             return null;

@@ -3,69 +3,52 @@ package com.appsp.Oncf.controllers;
 import com.appsp.Oncf.Services.AffectationAgentPService;
 import com.appsp.Oncf.models.AffectationAgentP;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
+import java.net.URI;
 
 @RestController
-@RequestMapping("/affectations_agent_p")
+@RequestMapping("/affectation-agent-p")
 public class AffectationAgentPController {
 
     @Autowired
     private AffectationAgentPService affectationAgentPService;
 
-    // Créer une affectation agent P
+    @GetMapping("/{id}")
+    public ResponseEntity<AffectationAgentP> getAffectationAgentPById(@PathVariable int id) {
+        AffectationAgentP affectationAgentP = affectationAgentPService.getAffectationAgentPById(id);
+        if (affectationAgentP != null) {
+            return ResponseEntity.ok(affectationAgentP);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
     @PostMapping
-    public ResponseEntity<AffectationAgentP> creerAffectationAgentP(@RequestBody AffectationAgentP affectationAgentP) {
-        AffectationAgentP nouvelleAffectationAgentP = affectationAgentPService.creerAffectationAgentP(affectationAgentP);
-        return new ResponseEntity<>(nouvelleAffectationAgentP, HttpStatus.CREATED);
+    public ResponseEntity<AffectationAgentP> createAffectationAgentP(@RequestBody AffectationAgentP affectationAgentP) {
+        AffectationAgentP createdAffectationAgentP = affectationAgentPService.createAffectationAgentP(affectationAgentP);
+        return ResponseEntity.created(URI.create("/affectation-agent-p/" + createdAffectationAgentP.getId_AffectAP())).body(createdAffectationAgentP);
     }
-    // Récupérer toutes les affectations agents P
-
-    @GetMapping
-    public ResponseEntity<List<AffectationAgentP>> recupererToutesLesAffectationsAgentsP() {
-        List<AffectationAgentP> affectationsAgentsP = affectationAgentPService.recupererToutesLesAffectationsAgentsP();
-        return new ResponseEntity<>(affectationsAgentsP, HttpStatus.OK);
-    }
-
-// Récupérer une affectation agent P par son ID
-
-    @GetMapping("/{id}")
-    public ResponseEntity<AffectationAgentP> recupererAffectationAgentPParId(@PathVariable("id") int id) {
-        Optional<AffectationAgentP> affectationAgentP = affectationAgentPService.recupererAffectationAgentPParId(id);
-        return affectationAgentP.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
-
-// Mettre à jour une affectation agent P
 
     @PutMapping("/{id}")
-    public ResponseEntity<AffectationAgentP> mettreAJourAffectationAgentP(@PathVariable("id") int id, @RequestBody AffectationAgentP affectationAgentP) {
-        Optional<AffectationAgentP> affectationAgentPExistant = affectationAgentPService.recupererAffectationAgentPParId(id);
-        if (affectationAgentPExistant.isPresent()) {
-            affectationAgentP.setId_AffectP(id);
-            AffectationAgentP affectationAgentPMisAJour = affectationAgentPService.mettreAJourAffectationAgentP(affectationAgentP);
-            return new ResponseEntity<>(affectationAgentPMisAJour, HttpStatus.OK);
+    public ResponseEntity<AffectationAgentP> updateAffectationAgentP(@PathVariable int id, @RequestBody AffectationAgentP affectationAgentP) {
+        affectationAgentP.setId_AffectAP(id);
+        AffectationAgentP updatedAffectationAgentP = affectationAgentPService.updateAffectationAgentP(affectationAgentP);
+        if (updatedAffectationAgentP != null) {
+            return ResponseEntity.ok(updatedAffectationAgentP);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
     }
-
-// Supprimer une affectation agent P
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> supprimerAffectationAgentP(@PathVariable("id") int id) {
-        Optional<AffectationAgentP> affectationAgentP = affectationAgentPService.recupererAffectationAgentPParId(id);
-        if (affectationAgentP.isPresent()) {
-            affectationAgentPService.supprimerAffectationAgentP(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<Void> deleteAffectationAgentP(@PathVariable int id) {
+        affectationAgentPService.deleteAffectationAgentPById(id);
+        return ResponseEntity.noContent().build();
     }
 }
+
+
 
 

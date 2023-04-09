@@ -39,7 +39,7 @@ public class AffectationPrealableController {
 
     @PutMapping("/{id}")
     public ResponseEntity<AffectationPrealable> mettreAJourAffectationPrealable(@PathVariable int id, @RequestBody AffectationPrealable affectationPrealable) {
-        affectationPrealable.setId_AffecP(id);
+        affectationPrealable.setId_affecp(id);
         AffectationPrealable affectationPrealableModifiee = affectationPrealableService.mettreAJourAffectationPrealable(affectationPrealable);
         if (affectationPrealableModifiee != null) {
             return new ResponseEntity<>(affectationPrealableModifiee, HttpStatus.OK);

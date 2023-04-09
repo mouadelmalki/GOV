@@ -1,6 +1,5 @@
 package com.appsp.Oncf.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -8,57 +7,55 @@ import com.appsp.Oncf.Services.CompositionService;
 import com.appsp.Oncf.models.Composition;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/compositions")
 public class CompositionController {
 
-    @Autowired
-    private CompositionService compositionService;
+    private final CompositionService compositionService;
 
-    @PostMapping
-    public ResponseEntity<Composition> creerComposition(@RequestBody Composition composition) {
-        Composition nouvelleComposition = compositionService.creerComposition(composition);
-        return new ResponseEntity<>(nouvelleComposition, HttpStatus.CREATED);
+    public CompositionController(CompositionService compositionService) {
+        this.compositionService = compositionService;
     }
 
-    @GetMapping
-    public List<Composition> recupererToutesLesCompositions() {
-        return compositionService.recupererToutesLesCompositions();
+    @PostMapping
+    public ResponseEntity<Composition> createComposition(@RequestBody Composition composition) {
+        Composition createdComposition = compositionService.createComposition(composition);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdComposition);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Composition> recupererCompositionParId(@PathVariable int id) {
-        Optional<Composition> compositionOptional = compositionService.recupererCompositionParId(id);
-        if (compositionOptional.isPresent()) {
-            return new ResponseEntity<>(compositionOptional.get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<Composition> getCompositionById(@PathVariable int id) {
+        Composition composition = compositionService.getCompositionById(id);
+        if (composition == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
+        return ResponseEntity.ok(composition);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Composition>> getAllCompositions() {
+        List<Composition> compositions = compositionService.getAllCompositions();
+        return ResponseEntity.ok(compositions);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Composition> mettreAJourComposition(@PathVariable int id, @RequestBody Composition composition) {
-        Optional<Composition> compositionOptional = compositionService.recupererCompositionParId(id);
-        if (compositionOptional.isPresent()) {
-            composition.setId_AffectV(id);
-            Composition compositionMiseAJour = compositionService.mettreAJourComposition(composition);
-            return new ResponseEntity<>(compositionMiseAJour, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<Composition> updateComposition(@PathVariable int id, @RequestBody Composition composition) {
+        Composition updatedComposition = compositionService.updateComposition(id, composition);
+        if (updatedComposition == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
+        return ResponseEntity.ok(updatedComposition);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> supprimerComposition(@PathVariable int id) {
-        Optional<Composition> compositionOptional = compositionService.recupererCompositionParId(id);
-        if (compositionOptional.isPresent()) {
-            compositionService.supprimerComposition(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<Void> deleteComposition(@PathVariable int id) {
+        boolean deleted = compositionService.deleteComposition(id);
+        if (deleted) {
+            return ResponseEntity.noContent().build();
         }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 }
+
 

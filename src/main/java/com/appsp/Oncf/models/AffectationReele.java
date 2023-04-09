@@ -5,17 +5,22 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class AffectationReele {
+@Table(name = "affectationreele")
+public class AffectationReele implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id_AffecR;
 
-    private String affectVoie;
+    @ManyToOne
+    @JoinColumn(name = "affectvoie_id", referencedColumnName = "id_affecv")
+    private AffectationVoie affectationVoie;
 
 }
 

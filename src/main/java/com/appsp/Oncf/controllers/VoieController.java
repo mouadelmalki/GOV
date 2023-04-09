@@ -1,6 +1,8 @@
 package com.appsp.Oncf.controllers;
 
+import com.appsp.Oncf.Services.UtilisateurService;
 import com.appsp.Oncf.Services.VoieService;
+import com.appsp.Oncf.models.Utilisateur;
 import com.appsp.Oncf.models.Voie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,14 +11,22 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 @RestController
 @RequestMapping("/voie")
 public class VoieController {
 
-    private final VoieService voieService;
+    //private final VoieService voieService;
+    @Autowired
+    private VoieService voieService;
 
-    public VoieController(VoieService voieService) {
-        this.voieService = voieService;
+    //public VoieController(VoieService voieService) {
+        //this.voieService = voieService;
+   // }
+
+    @GetMapping
+    public List<Voie> recupererTousLesVoies() {
+        return voieService.recupererTousLesVoies();
     }
 
     @GetMapping("/{id}")
