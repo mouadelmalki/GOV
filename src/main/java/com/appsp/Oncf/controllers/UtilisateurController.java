@@ -1,6 +1,9 @@
 package com.appsp.Oncf.controllers;
 
+import com.appsp.Oncf.Repository.UtilisateurRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import com.appsp.Oncf.Services.UtilisateurService;
 import com.appsp.Oncf.models.Utilisateur;
@@ -10,18 +13,27 @@ import org.springframework.http.ResponseEntity;
 import java.util.Optional;
 
 
-@RestController
+@Controller
 @RequestMapping("/utilisateurs")
 public class UtilisateurController {
 
     @Autowired
     private UtilisateurService utilisateurService;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private UtilisateurRepository utilisateurRepository;
+
     // Créer un utilisateur
-    @PostMapping
+    @PostMapping("/utilisateurs")
     public ResponseEntity<Utilisateur> creerUtilisateur(@RequestBody Utilisateur utilisateur) {
-        Utilisateur nouvelUtilisateur = utilisateurService.creerUtilisateur(utilisateur);
-        return new ResponseEntity<>(nouvelUtilisateur, HttpStatus.CREATED);
+        String motDePasse = utilisateur.getMotDePasse();
+        String motDePasseCrypte = passwordEncoder.encode(motDePasse); // Crypter le mot de passe
+        utilisateur.setMotDePasse(motDePasseCrypte);
+        utilisateurRepository.save(utilisateur); // Enregistrer l'utilisateur dans la base de données
+        return new ResponseEntity<Utilisateur>(utilisateur, HttpStatus.CREATED);
     }
 
     // Récupérer tous les utilisateurs

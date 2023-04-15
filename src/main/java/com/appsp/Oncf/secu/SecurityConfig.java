@@ -1,28 +1,29 @@
-package secu;
+package com.appsp.Oncf.secu;
 
 import com.appsp.Oncf.Services.UtilisateurService;
-import org.apache.catalina.startup.WebAnnotationSet;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.SecurityBuilder;
+import org.springframework.security.config.annotation.SecurityConfigurer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.SecurityFilterChain;
 
-
-
-@ComponentScan("com.appsp.Oncf.Services")
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-
     @Autowired
     private UtilisateurService utilisateurService;
+
+    @Autowired
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -30,12 +31,15 @@ public class SecurityConfig {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(utilisateurService);
+        provider.setPasswordEncoder(new BCryptPasswordEncoder());
+        return provider;
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public Object securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/login").permitAll()
@@ -47,21 +51,20 @@ public class SecurityConfig {
                         .loginPage("/login")
                         .defaultSuccessUrl("/home")
                         .failureUrl("/login?error=true")
-                )
+                        .permitAll())
                 .logout(logout -> logout
                         .logoutSuccessUrl("/login?logout=true")
                         .invalidateHttpSession(true)
-                        .clearAuthentication(true)
-                )
+                        .deleteCookies("JSESSIONID"))
                 .exceptionHandling(exception -> exception
-                        .accessDeniedPage("/access-denied")
-                )
-                .build();
+                        .accessDeniedPage("/access-denied"))
+                .authenticationProvider(authenticationProvider());
     }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+
 }
-
-
-
-
-
-
